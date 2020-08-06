@@ -9,9 +9,9 @@ class MoviesContainer extends React.Component {
 		    "director": "Victor Fleming",
 		    "genre": [
 		      "Adventure",
-		      " Family",
-		      " Fantasy",
-		      " Musical"
+		      "Family",
+		      "Fantasy",
+		      "Musical"
 		    ],
 		    "imdb_score": 8.3,
 		    "name": "The Wizard of Oz"
@@ -21,9 +21,9 @@ class MoviesContainer extends React.Component {
 		    "director": "George Lucas",
 		    "genre": [
 		      "Action",
-		      " Adventure",
-		      " Fantasy",
-		      " Sci-Fi"
+		      "Adventure",
+		      "Fantasy",
+		      "Sci-Fi"
 		    ],
 		    "imdb_score": 8.8,
 		    "name": "Star Wars"
@@ -33,8 +33,8 @@ class MoviesContainer extends React.Component {
 		    "director": "Giovanni Pastrone",
 		    "genre": [
 		      "Adventure",
-		      " Drama",
-		      " War"
+		      "Drama",
+		      "War"
 		    ],
 		    "imdb_score": 6.6,
 		    "name": "Cabiria"
@@ -44,8 +44,8 @@ class MoviesContainer extends React.Component {
 		    "director": "Alfred Hitchcock",
 		    "genre": [
 		      "Horror",
-		      " Mystery",
-		      " Thriller"
+		      "Mystery",
+		      "Thriller"
 		    ],
 		    "imdb_score": 8.7,
 		    "name": "Psycho"
@@ -55,15 +55,91 @@ class MoviesContainer extends React.Component {
 		    "director": "Merian C. Cooper",
 		    "genre": [
 		      "Adventure",
-		      " Fantasy",
-		      " Horror"
+		      "Fantasy",
+		      "Horror"
 		    ],
 		    "imdb_score": 8.0,
 		    "name": "King Kong"
 		  }
 		],
+		movieListOriginal:[
+		  {
+		    "popularity": 83.0,
+		    "director": "Victor Fleming",
+		    "genre": [
+		      "Adventure",
+		      "Family",
+		      "Fantasy",
+		      "Musical"
+		    ],
+		    "imdb_score": 8.3,
+		    "name": "The Wizard of Oz"
+		  },
+		  {
+		    "popularity": 88.0,
+		    "director": "George Lucas",
+		    "genre": [
+		      "Action",
+		      "Adventure",
+		      "Fantasy",
+		      "Sci-Fi"
+		    ],
+		    "imdb_score": 8.8,
+		    "name": "Star Wars"
+		  },
+		  {
+		    "popularity": 66.0,
+		    "director": "Giovanni Pastrone",
+		    "genre": [
+		      "Adventure",
+		      "Drama",
+		      "War"
+		    ],
+		    "imdb_score": 6.6,
+		    "name": "Cabiria"
+		  },
+		  {
+		    "popularity": 87.0,
+		    "director": "Alfred Hitchcock",
+		    "genre": [
+		      "Horror",
+		      "Mystery",
+		      "Thriller"
+		    ],
+		    "imdb_score": 8.7,
+		    "name": "Psycho"
+		  },
+		  {
+		    "popularity": 80.0,
+		    "director": "Merian C. Cooper",
+		    "genre": [
+		      "Adventure",
+		      "Fantasy",
+		      "Horror"
+		    ],
+		    "imdb_score": 8.0,
+		    "name": "King Kong"
+		  }
+		],
+		movieName:'',
+		userName:'',
+		showSigninBox: false,
+		signIn: ''
+	}
 
-		movieName:''
+	 showSigninBox = () => {
+	 	if(this.state.userName.length === 0)
+			this.setState({showSigninBox: true, signIn: false});
+		else{
+			this.setState({ userName: '', signIn: false, showSigninBox: true});
+			localStorage.setItem('UserName', JSON.stringify(''));
+		}
+	}
+
+	handleSignIn = (e) => {
+		e.preventDefault();
+	    this.setState({showSigninBox: false, signIn: true});
+	    localStorage.setItem('UserName', JSON.stringify(this.state.userName));
 	}
 
 	compareMovie=(a ,b) =>{
@@ -102,19 +178,18 @@ class MoviesContainer extends React.Component {
 	}
 
 	showMatchingMovies = (movieList, searchName) => {
-		//console.log(movieList, movieName);
 		return movieList.filter((movie) => {
 			let movieName = movie.name.toLowerCase();
 			let queryString = searchName.toLowerCase();
 			if(movieName.includes(queryString))
 				return movie;
 		})
-
 	}
 
 	onChangeHandler = (e) => {
-		const movieName = e.target.value;
-		this.setState({ movieName });
+		const val = e.target.value;
+		let name = e.target.name;
+		this.setState({[name]: val});
 	}
 
 	onSubmitHandler = (e) => {
@@ -123,23 +198,85 @@ class MoviesContainer extends React.Component {
 	    this.setState({ movieList });
 	}
 
+	reset = (e) => {
+		let movieList = this.state.movieListOriginal;
+		this.setState({ movieList});
+	}
+
+	handleGenre = (genre) =>{
+		let data = [...this.state.movieList];
+		var flag = false;
+		let movieList=[];
+		data.forEach((movie) => {
+			movie.genre.forEach((movieGenre) => {
+				console.log(genre , movieGenre);
+				if(movieGenre == genre){ 
+					movieList.push(movie);
+				}
+		 	})
+		})
+		this.setState({ movieList });
+	}
+
+	componentDidMount(){
+		let userName = localStorage.getItem('UserName');
+		if(userName.length> 0) {
+			this.setState({
+				userName: JSON.parse(userName),
+				signIn: true
+			});
+		}
+	}
+
 	render() {
 	  return (
-	  	<div>
+	  	<div className="movie_app_container">
+	  		<h3 id="sign_in_out" onClick={this.showSigninBox}>{this.state.signIn? "Sign Out" : "Sign In"}</h3>
+	  		{this.state.showSigninBox? 
+	  		(<form type="submit" onSubmit={this.handleSignIn}>
+	  			<input type="text" onChange={this.onChangeHandler} name="userName"></input>
+	  			<button>Sign In</button>
+	  		</form>): null}
+	  		<font face="Comic sans MS" size="5">
+	  			<h1 className="heading"> Movies </h1>
+	  		</font>
 	  		<form onSubmit={this.onSubmitHandler}>
-	  			<input type="text" onChange={this.onChangeHandler}></input>
-	  			<button type="submit"></button>
+	  			<input className = "movie_searchbox" type="text" onChange={this.onChangeHandler} name="movieName"></input>
+	  			<button className= "search_button" type="submit" >Search</button>
 	  		</form>
-	  		<div>
+	  		<button className= "reset_button" type="submit" onClick={this.reset} >Reset</button>
+	  		<div id="genre_container">
+	  			<h2 id="genre_heading">Genres</h2>
+	  			<ul id="genre_list_container">
+	  				<li className= "genre_item" onClick={() => this.handleGenre("Adventure")}>Adventure</li>
+	  				<li className= "genre_item" onClick={() => this.handleGenre("Family")}>Family</li>
+	  				<li className= "genre_item" onClick={() => this.handleGenre("Fantasy")}>Fantasy</li>
+	  				<li className= "genre_item" onClick={() => this.handleGenre("Musical")}>Musical</li>
+	  				<li className= "genre_item" onClick={() => this.handleGenre("Sci-Fi")}>Sci-Fi</li>
+	  				<li className= "genre_item" onClick={() => this.handleGenre("War")}>War</li>
+	  				<li className= "genre_item" onClick={() => this.handleGenre("Drama")}>Drama</li>
+	  				<li className= "genre_item" onClick={() => this.handleGenre("Mystery")}>Mystery</li>
+	  				<li className= "genre_item" onClick={() => this.handleGenre("Thriller")}>Thriller</li>
+  				</ul>
+  				<button id="genre_button" onClick={this.reset}>Remove</button>
 	  		</div>
-		  	<div>sort By
-		  		<li onClick={this.sortByPopularity}>Popularity</li>
-		  		<li onClick={this.sortByDirectorName}>Director name</li>
-		  		<li onClick={this.sortByMoviesName}>Movies Name</li>
+		  	<div id="sort_container">
+		  		<h3 id="sort_heading"> Sort By </h3>
+		  		<ul id="sort_list_container">
+			  		<li className= "sort_item" onClick={this.sortByPopularity}>Popularity</li>
+			  		<li className= "sort_item" onClick={this.sortByDirectorName}>Director name</li>
+			  		<li className= "sort_item" onClick={this.sortByMoviesName}>Movies Name</li>
+		  		</ul>
 		  	</div>
+		  	{this.state.signIn && 
+			  	<div id="adminPanel">
+				  	<p> Add Movie </p>
+				  	<p>Delete Movie</p>
+				  	<p>Update Movie</p>
+			  	</div>}
 		    <div className="movies_container">
 		     {this.state.movieList.map((movies) => {
-		     	return(<div>{movies.name}</div>)
+		     	return(<div className="movie">{movies.name}</div>)
 		     })}
 		    </div>
 	    </div>

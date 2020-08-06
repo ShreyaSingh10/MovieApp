@@ -1,0 +1,103 @@
+.movie_app_container {
+    width: 100%;
+}
+#sign_in_out {
+	color: white;
+	margin-bottom: 5px;
+}
+.movie_app_container form{
+    display: inline-block;
+}
+.heading {
+	color: white;
+	margin: 0px;
+	padding: 5px 0 20px 0;
+}
+#genre_container {
+	border: 1px solid white;
+	margin: 5px 10px 10px 10px;
+	border-radius: 10px;
+	padding-bottom: 10px;
+}
+#genre_heading {
+	color: white;
+	margin: 5px;
+}
+#genre_list_container, #sort_list_container {
+	list-style-type: none;
+	margin: 10px 0px;
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
+	    padding-left: 10px;
+}
+.genre_item {
+	color: white;
+	display: inline-block;
+	margin-right: 15px;
+	border: 1px solid white;
+	padding: 10px;
+	margin: 5px 15px 5px 0px;
+	border-radius: 10px;
+	flex-grow: 4;
+}
+#genre_button {
+	display: inline-block;
+	height: 30px;
+	width: 200px;
+}
+#sort_container {
+	background-color: white;
+	display: inline-block;
+	border-radius: 10px;
+}
+#sort_heading {
+	margin-top: 5px;
+}
+.sort_item {
+	background-color: white;
+	border: 1px solid black;
+	display: inline-block;
+	padding: 5px;
+	margin-right: 10px;
+}
+.movie_searchbox {
+	width: 300px;
+    height: 40px;
+    border-radius: 10px;
+    background: aliceblue;
+    font-size: 20px;
+    padding: 5px 10px;
+    display: inline-block;
+}
+
+.search_button, .reset_button {
+	width: 100px;
+    height: 50px;
+    font-size: 20px;
+    border-radius: 10px;
+    background: aliceblue;
+    display: inline-block;
+}
+
+#adminPanel p{
+	color: white;
+	display: inline-block;
+	margin: 10px 2px 10px 2px;
+	border: 1px solid white;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.movies_container {
+	border: 1px solid white;
+	margin: 5px;
+	overflow-y: scroll;
+}
+.movie {
+	color: black;
+	background-color: white;
+	margin: 10px;
+	overflow-y: scroll;
+	padding: 30px;
+}
